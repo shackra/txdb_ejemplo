@@ -1,0 +1,7 @@
+version: "3.4"
+
+services:
+  db:
+    image: postgres:11.3-alpine
+    ports:
+      - "5432:5432"

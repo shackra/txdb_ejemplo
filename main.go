@@ -55,11 +55,11 @@ func MigrateAll(gdb *gorm.DB) error {
 
 func main() {
 	url := os.Getenv("DATABASE_URL")
-	txdb.Register("txdb_postgres", "postgres", url)
+	txdb.Register("txdb", "postgres", url)
 	var db *gorm.DB
 	var err error
 	for i := 0; i < 3; i++ {
-		db, err = gorm.Open("txdb_postgres", "tx_1")
+		db, err = gorm.Open("postgres", "txdb", "tx_1")
 		if err == nil {
 			break
 		}

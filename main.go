@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"os"
 	"time"
@@ -55,11 +56,14 @@ func MigrateAll(gdb *gorm.DB) error {
 
 func main() {
 	url := os.Getenv("DATABASE_URL")
-	txdb.Register("txdb_postgres", "postgres", url)
+	txdb.Register("txdb", "postgres", url)
+	s, err := sql.Open("txdb", "tx_1")
+	if err != nil {
+		panic(fmt.Sprintf("cannot open connection: %s", err))
+	}
 	var db *gorm.DB
-	var err error
 	for i := 0; i < 3; i++ {
-		db, err = gorm.Open("txdb_postgres", "tx_1")
+		db, err = gorm.Open("postgres", s)
 		if err == nil {
 			break
 		}
